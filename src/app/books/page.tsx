@@ -1,4 +1,4 @@
-import { BookList } from "@/features/books/book-list";
+import { BookList } from "@/features/books/components/book-list";
 
 export default async function BooksPage({
   searchParams,
