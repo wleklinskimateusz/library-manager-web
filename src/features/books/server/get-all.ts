@@ -1,0 +1,25 @@
+import { ApiClient } from "@/server/api-client";
+import { z } from "zod";
+import { bookSchema } from "../schema/book";
+
+export async function getAllBooks({
+  page = 1,
+  pageSize = 10,
+}: {
+  page: number | undefined;
+  pageSize: number | undefined;
+}) {
+  const apiClient = new ApiClient();
+  const { data: books, pagination } = await apiClient.get(
+    `/books?page=${page}&pageSize=${pageSize}`,
+    z.object({
+      data: z.array(bookSchema),
+      pagination: z.object({
+        total: z.number(),
+        page: z.number(),
+        pageSize: z.number(),
+      }),
+    })
+  );
+  return { books, pagination };
+}
