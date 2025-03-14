@@ -7,14 +7,7 @@ import { useRouter } from "next/navigation";
 export function Modal({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   return (
-    <Dialog
-      open={true}
-      onOpenChange={(open) => {
-        if (!open) {
-          router.back();
-        }
-      }}
-    >
+    <Dialog open={true} onOpenChange={(open) => !open && router.back()}>
       <DialogContent>{children}</DialogContent>
     </Dialog>
   );
