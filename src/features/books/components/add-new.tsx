@@ -1,11 +1,11 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 
 import { addBook } from "../server/add-book";
 import { useISBNLookup } from "../hooks/useISBNLookup";
+import { FormField } from "@/components/form-control";
 
 export function AddNew() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -26,14 +26,15 @@ export function AddNew() {
   };
 
   return (
-    <form ref={formRef} action={addBook}>
+    <form ref={formRef} action={addBook} className="flex flex-col gap-4">
       <div className="flex gap-2 justify-between items-end">
-        <div>
-          <label htmlFor="isbn">ISBN</label>
-          <Input type="text" id="isbn" name="isbn" required />
-        </div>
+        <FormField
+          label="ISBN"
+          inputOptions={{ id: "isbn", name: "isbn", required: true }}
+        />
         <Button
           type="button"
+          variant="outline"
           onClick={handleLookup}
           disabled={isLookupLoading}
           className="w-fit"
@@ -41,27 +42,26 @@ export function AddNew() {
           {isLookupLoading ? "Looking up..." : "Look up"}
         </Button>
       </div>
-      <div>
-        <label htmlFor="title">Title</label>
-        <Input type="text" name="title" id="title" required />
-      </div>
-      <div>
-        <label htmlFor="author">Author</label>
-        <Input type="text" name="author" id="author" required />
-      </div>
-      <div>
-        <label htmlFor="publishedAt">Published At</label>
-        <Input
-          type="number"
-          name="publishedAt"
-          id="publishedAt"
-          min={-3000}
-          max={new Date().getFullYear()}
-          step={1}
-          required
-        />
-      </div>
-      <button type="submit">Add Book</button>
+      <FormField
+        label="Title"
+        inputOptions={{ name: "title", id: "title", required: true }}
+      />
+      <FormField
+        label="Author"
+        inputOptions={{ name: "author", id: "author", required: true }}
+      />
+      <FormField
+        label="Published At"
+        inputOptions={{
+          type: "number",
+          name: "publishedAt",
+          id: "publishedAt",
+          min: -3000,
+          max: new Date().getFullYear(),
+          step: 1,
+        }}
+      />
+      <Button type="submit">Add Book</Button>
     </form>
   );
 }

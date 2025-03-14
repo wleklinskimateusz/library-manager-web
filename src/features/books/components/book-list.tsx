@@ -4,6 +4,8 @@ import { Pagination } from "@/components/pagination";
 import { Search } from "@/components/search";
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 export async function BookList({
   page = 1,
@@ -16,17 +18,25 @@ export async function BookList({
 }) {
   const { books, pagination } = await getAllBooks({ page, pageSize, search });
   return (
-    <div className="flex flex-col gap-4 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center">
-        <Link href="/books/add">Add New Book</Link>
-        <Search />
+    <div className="flex flex-col gap-16 max-w-7xl mx-auto pt-8">
+      <h1 className="text-2xl font-bold text-center">Books</h1>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-center gap-4 items-center">
+          <Link href="/books/add">
+            <Button variant="secondary">
+              <Plus />
+              Add New Book
+            </Button>
+          </Link>
+          <Search />
+        </div>
+        <ul className="flex flex-wrap gap-2">
+          {books.map((book) => (
+            <BookItemCard key={book.id} book={book} />
+          ))}
+        </ul>
+        <Pagination {...pagination} />
       </div>
-      <ul className="flex flex-wrap gap-2">
-        {books.map((book) => (
-          <BookItemCard key={book.id} book={book} />
-        ))}
-      </ul>
-      <Pagination {...pagination} />
     </div>
   );
 }

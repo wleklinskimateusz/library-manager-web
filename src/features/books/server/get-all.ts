@@ -22,7 +22,13 @@ export async function getAllBooks({
         page: z.number(),
         pageSize: z.number(),
       }),
-    })
+    }),
+    {
+      cache: "force-cache",
+      next: {
+        tags: ["books"],
+      },
+    }
   );
   return { books, pagination };
 }
